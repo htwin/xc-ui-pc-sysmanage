@@ -48,7 +48,7 @@
 
     </el-form>
     <div slot="footer" class="dialog-footer">
-      <el-button type="primary" @click="addSubmit" >提交</el-button>
+      <el-button type="primary" @click="editSubmit" >提交</el-button>
       <el-button type="primary" @click="go_back" >返回</el-button>
     </div>
   </div>
@@ -73,6 +73,29 @@
             pageType:'',
             pageCreateTime: new Date()
           }
+        }
+      },
+      methods:{
+        editSubmit(){
+          cmsApi.page_edit(this.pageId,this.pageForm).then((res)=>{
+
+              if(res.success){
+               this.$message.success("编辑成功");
+               this.go_back();
+              }else if(res.message){
+                  this.$message.error(res.message);
+              }else{
+                this.$message.error("编辑失败");
+              }
+          })
+        },
+        go_back(){
+          this.$router.push({
+            path: '/cms/page/list', query: {
+              page: this.$route.query.page,
+              siteId: this.$route.query.siteId
+            }
+          })
         }
       },
       created() {

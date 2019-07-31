@@ -13,3 +13,6 @@ export  const page_add = (params)=>{
 export const page_get = id=>{
   return http.requestQuickGet(apiUrl+"/cms/page/get/"+id);
 }
+export const page_edit =(id,params)=>{
+  return http.requestPut(apiUrl+"/cms/page/edit/"+id,params);
+}
