@@ -11,7 +11,9 @@
           :value="item.siteId">
         </el-option>
       </el-select>
-      页面别名：<el-input v-model="params.pageAliase"  style="width: 100px"></el-input>
+      页面别名：<el-input v-model="params.pageAliase" style="width:100px"></el-input>
+        页面名称:<el-input v-model="params.pageName" style="width:100px"></el-input>
+        页面类型:<el-input v-model="params.pageType" style="width:100px"></el-input>
       <el-button type="primary" v-on:click="query"  size="small">查询</el-button>
       <router-link class="mui-tab-item" :to="{path:'/cms/page/add/',query:{
       page:this.params.page,
@@ -38,9 +40,10 @@
     </el-table-column>
     <el-table-column prop="pageCreateTime" label="创建时间" width="180" >
     </el-table-column>
-      <el-table-column label="操作" width="80">
+      <el-table-column label="操作" width="100">
           <template slot-scope="page">
             <el-button size="small" type="text" @click="edit(page.row.pageId)">编辑</el-button>
+            <el-button size="small" type="text" @click="del(page.row.pageId)">删除</el-button>
           </template>
       </el-table-column>
     </el-table>
@@ -70,7 +73,9 @@
           page:1,
           size:5,
           siteId:"",
-          pageAliase:""
+          pageAliase:"",
+          pageName:"",
+          pageType:""
         }
       }
     },
@@ -87,6 +92,26 @@
               page:this.params.page,
               siteId:this.params.siteId
           }})
+      },
+      del:function(pageId){
+        this.$confirm("确认删除页面？","提示",{}).then(()=>{
+          cmsApi.page_del(pageId).then((res)=>{
+            if(res.success){
+              this.$message({
+                type:"success",
+                message:"删除成功"
+              });
+              this.query();
+            }else{
+              this.$message({
+                type:"error",
+                message:"删除失败"
+              });
+            }
+          })
+
+        })
+
       },
       changePage:function (page) {
         this.params.page = page;
