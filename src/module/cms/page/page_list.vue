@@ -38,6 +38,11 @@
     </el-table-column>
     <el-table-column prop="pageCreateTime" label="创建时间" width="180" >
     </el-table-column>
+      <el-table-column label="操作" width="80">
+          <template slot-scope="page">
+            <el-button size="small" type="text" @click="edit(page.row.pageId)">编辑</el-button>
+          </template>
+      </el-table-column>
     </el-table>
     <el-pagination
       background
@@ -75,6 +80,13 @@
           this.total = res.queryResult.total;
           this.list = res.queryResult.list;
         })
+      },
+      edit:function(pageId){
+        this.$router.push({path:'/cms/page/edit/',query:{
+              pageId:pageId,
+              page:this.params.page,
+              siteId:this.params.siteId
+          }})
       },
       changePage:function (page) {
         this.params.page = page;
